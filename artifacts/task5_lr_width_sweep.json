@@ -1,0 +1,316 @@
+{
+  "config": {
+    "widths": [
+      256,
+      512,
+      1024
+    ],
+    "lrs": [
+      7.5e-05,
+      0.00015,
+      0.0003,
+      0.0006,
+      0.0012,
+      0.0024,
+      0.0048,
+      0.0096
+    ],
+    "steps": 80,
+    "warmup": 10,
+    "seeds": [
+      11,
+      12
+    ],
+    "batch": 8,
+    "seqlen": 32,
+    "vocab": 64,
+    "parameterization": "standard (SP), init std 0.02, no muP scaling",
+    "schedule": "linear warmup + cosine to 10%",
+    "optimizer": "AdamW",
+    "betas": [
+      0.9,
+      0.95
+    ],
+    "weight_decay": 0.1,
+    "grid_spacing_factor": 2.0,
+    "grid_shifted_down_after_pilot": true
+  },
+  "sweep": {
+    "256": {
+      "7.5e-05": {
+        "values": [
+          3.8178683519363403,
+          3.8124386072158813
+        ],
+        "mean": 3.815153479576111,
+        "stdev": 0.0038394093119484027,
+        "diverged": false
+      },
+      "0.00015": {
+        "values": [
+          3.6858940720558167,
+          3.69198077917099
+        ],
+        "mean": 3.6889374256134033,
+        "stdev": 0.004303951876235477,
+        "diverged": false
+      },
+      "0.0003": {
+        "values": [
+          3.3800748586654663,
+          3.423079550266266
+        ],
+        "mean": 3.401577204465866,
+        "stdev": 0.030408909053761535,
+        "diverged": false
+      },
+      "0.0006": {
+        "values": [
+          2.326057016849518,
+          2.4147450923919678
+        ],
+        "mean": 2.370401054620743,
+        "stdev": 0.06271193962645115,
+        "diverged": false
+      },
+      "0.0012": {
+        "values": [
+          1.7851662635803223,
+          1.7937302589416504
+        ],
+        "mean": 1.7894482612609863,
+        "stdev": 0.006055659194045254,
+        "diverged": false
+      },
+      "0.0024": {
+        "values": [
+          1.8150459825992584,
+          1.8525865375995636
+        ],
+        "mean": 1.833816260099411,
+        "stdev": 0.026545181010222345,
+        "diverged": false
+      },
+      "0.0048": {
+        "values": [
+          3.600440502166748,
+          2.8566299080848694
+        ],
+        "mean": 3.2285352051258087,
+        "stdev": 0.5259535149936909,
+        "diverged": false
+      },
+      "0.0096": {
+        "values": [
+          3.9458239674568176,
+          3.9702752232551575
+        ],
+        "mean": 3.9580495953559875,
+        "stdev": 0.017289648783532993,
+        "diverged": false
+      }
+    },
+    "512": {
+      "7.5e-05": {
+        "values": [
+          3.505062460899353,
+          3.4806713461875916
+        ],
+        "mean": 3.4928669035434723,
+        "stdev": 0.017247122613385502,
+        "diverged": false
+      },
+      "0.00015": {
+        "values": [
+          2.9056933522224426,
+          2.8414116501808167
+        ],
+        "mean": 2.8735525012016296,
+        "stdev": 0.04545402741984687,
+        "diverged": false
+      },
+      "0.0003": {
+        "values": [
+          1.8419594466686249,
+          1.8014512062072754
+        ],
+        "mean": 1.8217053264379501,
+        "stdev": 0.028643651524155503,
+        "diverged": false
+      },
+      "0.0006": {
+        "values": [
+          1.8094121217727661,
+          1.7912479639053345
+        ],
+        "mean": 1.8003300428390503,
+        "stdev": 0.01284399920260389,
+        "diverged": false
+      },
+      "0.0012": {
+        "values": [
+          1.8042836487293243,
+          1.79836905002594
+        ],
+        "mean": 1.8013263493776321,
+        "stdev": 0.00418225285116027,
+        "diverged": false
+      },
+      "0.0024": {
+        "values": [
+          1.8400351703166962,
+          1.8463546335697174
+        ],
+        "mean": 1.8431949019432068,
+        "stdev": 0.0044685353196705175,
+        "diverged": false
+      },
+      "0.0048": {
+        "values": [
+          3.9655619263648987,
+          3.962575316429138
+        ],
+        "mean": 3.9640686213970184,
+        "stdev": 0.0021118521383353675,
+        "diverged": false
+      },
+      "0.0096": {
+        "values": [
+          3.941377878189087,
+          3.955885410308838
+        ],
+        "mean": 3.9486316442489624,
+        "stdev": 0.010258374340157564,
+        "diverged": false
+      }
+    },
+    "1024": {
+      "7.5e-05": {
+        "values": [
+          2.688668370246887,
+          2.6280981302261353
+        ],
+        "mean": 2.6583832502365112,
+        "stdev": 0.04282962745677051,
+        "diverged": false
+      },
+      "0.00015": {
+        "values": [
+          1.8510813117027283,
+          1.8504151105880737
+        ],
+        "mean": 1.850748211145401,
+        "stdev": 0.0004710753258062626,
+        "diverged": false
+      },
+      "0.0003": {
+        "values": [
+          1.7950912117958069,
+          1.7941501438617706
+        ],
+        "mean": 1.7946206778287888,
+        "stdev": 0.0006654355177142504,
+        "diverged": false
+      },
+      "0.0006": {
+        "values": [
+          1.7852997481822968,
+          1.771963655948639
+        ],
+        "mean": 1.7786317020654678,
+        "stdev": 0.009430041252948707,
+        "diverged": false
+      },
+      "0.0012": {
+        "values": [
+          1.7999942898750305,
+          1.807787299156189
+        ],
+        "mean": 1.8038907945156097,
+        "stdev": 0.00551048970855684,
+        "diverged": false
+      },
+      "0.0024": {
+        "values": [
+          2.459122121334076,
+          2.600483238697052
+        ],
+        "mean": 2.529802680015564,
+        "stdev": 0.09995740468346778,
+        "diverged": false
+      },
+      "0.0048": {
+        "values": [
+          3.949033737182617,
+          3.9623202085494995
+        ],
+        "mean": 3.9556769728660583,
+        "stdev": 0.009394954001563389,
+        "diverged": false
+      },
+      "0.0096": {
+        "values": [
+          4.018415868282318,
+          3.972681760787964
+        ],
+        "mean": 3.995548814535141,
+        "stdev": 0.03233889754077239,
+        "diverged": false
+      }
+    }
+  },
+  "minima": {
+    "256": {
+      "grid_argmin_lr": 0.0012,
+      "grid_min_loss": 1.7894482612609863,
+      "subgrid_lr": 0.001615613409224378,
+      "subgrid_fit_valid": true,
+      "interior": true
+    },
+    "512": {
+      "grid_argmin_lr": 0.0006,
+      "grid_min_loss": 1.8003300428390503,
+      "subgrid_lr": 0.0008227351304559326,
+      "subgrid_fit_valid": true,
+      "interior": true
+    },
+    "1024": {
+      "grid_argmin_lr": 0.0006,
+      "grid_min_loss": 1.7786317020654678,
+      "subgrid_lr": 0.0005550401699710908,
+      "subgrid_fit_valid": true,
+      "interior": true
+    }
+  },
+  "power_law": {
+    "form": "eta_star = C * width^alpha",
+    "alpha": -0.7707089662977087,
+    "C": 0.11067069056212159,
+    "r_squared": 0.9774248696741866,
+    "theory_expectation_alpha": -1.0,
+    "alpha_matches_theory_within_0_3": true
+  },
+  "extrapolation_to_4096": {
+    "fitted_power_law": 0.0001819509881283917,
+    "theory_prior_alpha_minus_1": 0.0001387600424927727,
+    "ratio_fit_over_theory": 1.3112635659351906,
+    "recommended": 0.0001387600424927727,
+    "recommendation_rule": "take the smaller of the two extrapolations; at 4096 an lr that is too high risks a loss spike that costs far more than the small amount of convergence speed given up by being conservative"
+  },
+  "confidence": {
+    "level": "low to moderate",
+    "what_supports_it": [
+      "three widths, two seeds each, interior minima on a log grid",
+      "power-law fit R^2 = 0.977",
+      "fitted exponent compared against an independent theory prior"
+    ],
+    "what_limits_it": [
+      "grid spacing is 2x, so the minimum is only located to within a factor of ~2 before the parabola fit",
+      "only 80 steps per run; the optimal lr for a short budget is higher than for a long run, so these minima are biased upward",
+      "4096 is a 4x extrapolation beyond the largest measured width, and it is exactly where SP scaling tends to break down",
+      "2 seeds cannot separate curvature of the loss-vs-lr curve from seed noise",
+      "depth held at 2 layers; real 4096-width models are deep, and depth interacts with the optimal lr"
+    ],
+    "what_i_would_do_instead": "not extrapolate. Switch to muP so the optimal lr transfers across width by construction, or spend one short sweep at width 2048 to test the fitted exponent before committing at 4096."
+  }
+}
