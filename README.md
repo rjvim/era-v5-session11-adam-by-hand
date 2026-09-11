@@ -237,10 +237,17 @@ cool the WSD run down and re-compare.
 ## Task 5 — Learning rate sweep across widths
 
 Widths 256 / 512 / 1024, eight learning rates spanning 7.5e−5 to 9.6e−3, two
-seeds per cell, 80 steps, warmup plus cosine. **Standard parameterization**
-(init std 0.02, width-independent, no per-layer lr scaling) — this is the whole
-premise: under SP the optimal lr should *move* with width, and under muP it
-would not.
+seeds per cell, 80 steps, warmup plus cosine. Init is **std 0.02,
+width-independent**, with a single global lr and no per-layer scaling — so
+there is no muP-style correction holding the optimum in place, and the optimal
+lr is free to move with width.
+
+A naming caveat, because it changes which theory applies: in the muP
+literature "standard parameterization" specifically means init std ∝ 1/√fan_in
+with one global lr, and it is *that* setup for which the Adam result
+α = −1 is quoted. A width-independent init std is **not** SP in that sense, so
+α = −1 is not a prior this run inherits. It is included below as a reference
+point only, not as a matching theory.
 
 Held-out loss (mean of 2 seeds):
 
@@ -265,22 +272,35 @@ Held-out loss (mean of 2 seeds):
 
 All three are interior to the grid, and every width shows a clean U — the loss
 rises on both sides and blows up to the ln(64) = 4.16 ceiling above 4.8e−3. The
-optimum moves left as width grows, which is the SP behaviour the experiment was
-built to detect.
+optimum moves left as width grows, which is what the experiment was built to
+detect: without a width-correcting parameterization, lr does not transfer.
 
 Fitting `η* = C · width^α` on the sub-grid minima:
 
-**α = −0.771, R² = 0.977**, against a theory expectation of α = −1.
+**α = −0.771, R² = 0.977.** For reference, Adam under true SP (fan-in init) is
+usually quoted at α = −1; this setup is not that, so the comparison is a sanity
+check on magnitude and sign, not a prediction this run was expected to hit.
+
+Two cautions on the fit itself. Three points fitting two parameters leaves one
+residual degree of freedom, so R² = 0.977 is weaker evidence than it looks. And
+an obvious hand-derivation for the exponent does **not** survive measurement:
+if Adam moved each element by ~lr then ‖ΔW‖ would scale as lr·width, but
+measured on this model ‖ΔW‖ goes roughly as lr·width^0.72 (Adam only takes a
+full-size step where the gradient sign is consistent). So α here is an
+empirical fit with no derivation behind it.
 
 ### Value I would use at width 4096
 
 | method | value |
 |---|---|
 | fitted power law (α = −0.771) | 1.82e−04 |
-| theory prior (α = −1, anchored at width 1024) | 1.39e−04 |
+| reference exponent (α = −1, anchored at width 1024) | 1.39e−04 |
 | **recommended** | **1.39e-04** |
 
-The two extrapolations differ by only 1.31×, which is reassuring. I take the
+The two extrapolations differ by only 1.31×. That is reassuring about
+*magnitude*, but the two are not independent evidence — the second is a
+reference exponent imported from a different parameterization, not a
+measurement of this one. I take the
 **smaller** one: at width 4096 an lr that is too high risks a loss spike that
 costs far more compute than the modest convergence speed given up by being
 conservative. Asymmetric downside, so bias low.
@@ -288,7 +308,8 @@ conservative. Asymmetric downside, so bias low.
 ### How confident am I? Low to moderate.
 
 Supporting it: three widths with interior minima on a log grid, two seeds each,
-a good power-law fit, and an independent theory prior that broadly agrees.
+a clean U-shape at every width, and a fitted exponent whose sign and rough
+magnitude are unsurprising.
 
 Limiting it, honestly:
 
@@ -301,6 +322,10 @@ Limiting it, honestly:
   exactly the regime where SP scaling tends to break down.
 - **Two seeds cannot separate the curvature** of the loss-vs-lr curve from seed
   noise.
+- **The exponent has no theory behind it.** The derivation that would predict
+  −1/2 is falsified by the measured ‖ΔW‖ scaling above, and −1 belongs to a
+  parameterization this model does not use. α = −0.771 is a fit to three
+  points, nothing more.
 - **Depth held at 2 layers.** Real 4096-width models are deep, and depth
   interacts with the optimal lr.
 - **The 1024 basin is shallow and flat**: 1.7946 / 1.7786 / 1.8039 across three
@@ -353,7 +378,17 @@ larger.** `c₁ = 0.316`. The uncorrected arm overshoots because `v` starts at
 zero. The sign of this effect also flips depending on β₂ (see the β₂ table), so
 "bias correction makes steps bigger" is simply wrong as a general statement.
 
-**4. Background jobs do not survive between sessions in this sandbox.** The
+**4. A plausible-sounding derivation for the width exponent, falsified by
+measurement.** The argument: Adam moves each element by about `lr`, so
+`‖ΔW‖ ≈ lr·width`, and holding the update-to-weight ratio fixed gives a clean
+predicted exponent. Measuring the actual update norm on this model killed it —
+`‖ΔW‖` scales as roughly `lr·width^0.72`, not `lr·width`, because Adam only
+takes a full-size step on coordinates whose gradient sign is consistent, and
+under batch noise the typical `m/√v` is well below 1. The derivation was
+removed rather than kept as intuition, and α is reported as a bare empirical
+fit. Recording it because it was convincing enough to nearly ship.
+
+**5. Background jobs do not survive between sessions in this sandbox.** The
 width-1024 sweep was killed twice mid-run before this was diagnosed. Fixed by
 checkpointing every `(width, lr)` cell to
 `artifacts/task5_partial.json` the moment it is measured, so the sweep resumes
